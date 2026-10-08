@@ -47,9 +47,6 @@ body {
     padding: 50px 0;
 }
 
-
-/* ================= SCREEN ================= */
-
 .screen {
     display: none;
 
@@ -60,9 +57,6 @@ body {
 .screen.active {
     display: block;
 }
-
-
-/* ================= BRAND ================= */
 
 .brand {
     display: flex;
@@ -91,9 +85,6 @@ body {
 
     font-size: 20px;
 }
-
-
-/* ================= HOME ================= */
 
 .hero {
     margin-bottom: 42px;
@@ -133,9 +124,6 @@ body {
     line-height: 1.6;
 }
 
-
-/* ================= BUTTONS ================= */
-
 .action-area {
     display: flex;
 
@@ -168,7 +156,6 @@ button:active {
 .primary-btn,
 .secondary-btn,
 .back-btn {
-
     min-height: 50px;
 
     padding: 0 25px;
@@ -231,11 +218,7 @@ button:active {
     font-size: 17px;
 }
 
-
-/* ================= EMPTY STATE ================= */
-
 .empty-state {
-
     min-height: 190px;
 
     border: 1px dashed #cdd7e7;
@@ -256,7 +239,6 @@ button:active {
 }
 
 .empty-icon {
-
     width: 45px;
     height: 45px;
 
@@ -277,14 +259,12 @@ button:active {
 }
 
 .empty-state p {
-
     font-size: 14px;
 
     font-weight: 600;
 }
 
 .empty-state span {
-
     margin-top: 5px;
 
     color: var(--muted);
@@ -292,18 +272,65 @@ button:active {
     font-size: 12px;
 }
 
+.qr-header {
+    text-align: center;
 
-/* ================= PROCESSING ================= */
+    margin-bottom: 25px;
+}
+
+.qr-header h2 {
+    font-size: 34px;
+
+    margin-bottom: 12px;
+}
+
+.qr-header p {
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+#qrReader {
+    width: min(100%, 430px);
+
+    margin: 0 auto 18px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+#qrReader video {
+    width: 100% !important;
+}
+
+.qr-status {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+#qrScreen > .back-btn {
+    margin: 0 auto;
+}
 
 .processing-content {
-
     text-align: center;
 
     padding: 100px 20px;
 }
 
 .loader {
-
     width: 48px;
     height: 48px;
 
@@ -319,22 +346,18 @@ button:active {
 }
 
 @keyframes spin {
-
     to {
         transform: rotate(360deg);
     }
-
 }
 
 .processing-content h2 {
-
     font-size: 30px;
 
     margin-bottom: 14px;
 }
 
 .processing-content p {
-
     color: var(--muted);
 
     font-size: 14px;
@@ -342,11 +365,7 @@ button:active {
     margin-top: 5px;
 }
 
-
-/* ================= SUCCESS ================= */
-
 .result-header {
-
     display: flex;
 
     align-items: flex-end;
@@ -359,12 +378,10 @@ button:active {
 }
 
 .result-header h2 {
-
     font-size: 34px;
 }
 
 .success-badge {
-
     padding: 9px 13px;
 
     border-radius: 8px;
@@ -381,12 +398,10 @@ button:active {
 }
 
 .success-badge span {
-
     margin-right: 5px;
 }
 
 .details {
-
     background: white;
 
     border: 1px solid var(--border);
@@ -399,7 +414,6 @@ button:active {
 }
 
 .detail-row {
-
     min-height: 70px;
 
     padding: 0 22px;
@@ -410,38 +424,46 @@ button:active {
 
     justify-content: space-between;
 
+    gap: 20px;
+
     border-bottom: 1px solid #edf0f5;
 }
 
 .detail-row:last-child {
-
     border-bottom: none;
 }
 
 .detail-row span {
-
     color: var(--muted);
 
     font-size: 13px;
+
+    flex-shrink: 0;
 }
 
 .detail-row strong {
-
     font-size: 14px;
+
+    text-align: right;
+
+    max-width: 55%;
+
+    overflow-wrap: anywhere;
+}
+
+.detail-row strong.not-found {
+    color: var(--muted);
+
+    font-weight: 500;
 }
 
 .result-actions {
-
     display: flex;
 
     gap: 12px;
 }
 
-
-/* ================= ERROR ================= */
-
 .error-content {
-
     text-align: center;
 
     padding: 70px 30px;
@@ -454,7 +476,6 @@ button:active {
 }
 
 .error-icon {
-
     width: 52px;
     height: 52px;
 
@@ -477,7 +498,6 @@ button:active {
 }
 
 .error-content h2 {
-
     max-width: 500px;
 
     margin: auto;
@@ -488,7 +508,6 @@ button:active {
 }
 
 .error-content p {
-
     max-width: 500px;
 
     margin: 15px auto 25px;
@@ -500,11 +519,7 @@ button:active {
     line-height: 1.5;
 }
 
-
-/* ================= RESPONSIVE ================= */
-
 @media (max-width: 600px) {
-
     .app {
         padding: 30px 0;
     }
@@ -528,25 +543,40 @@ button:active {
     }
 
     .result-header {
-
         align-items: flex-start;
 
         flex-direction: column;
     }
 
     .success-badge {
-
         white-space: normal;
     }
 
     .result-actions {
-
         flex-direction: column;
     }
 
     .detail-row {
+        min-height: 65px;
 
-        padding: 0 16px;
+        padding: 12px 16px;
+
+        align-items: flex-start;
+        justify-content: center;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .detail-row strong {
+        max-width: 100%;
+
+        text-align: left;
+    }
+
+    #qrReader {
+        width: 100%;
     }
 }
 

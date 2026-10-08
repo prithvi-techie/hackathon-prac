@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>QR / Package Scanner</title>
+    <title>Package Scanner</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/html5-qrcode" defer></script>
     <script src="script.js" defer></script>
 </head>
 
 <body>
 
 <main class="app">
-
-    <!-- ================= HOME ================= -->
 
     <section id="homeScreen" class="screen active">
 
@@ -39,7 +39,6 @@
 
         </div>
 
-
         <div class="action-area">
 
             <button id="scanQrBtn" class="primary-btn">
@@ -61,7 +60,6 @@
 
         </div>
 
-
         <div class="empty-state">
 
             <div class="empty-icon">⌑</div>
@@ -76,8 +74,31 @@
 
     </section>
 
+    <section id="qrScreen" class="screen">
 
-    <!-- ================= PROCESSING ================= -->
+        <div class="qr-header">
+
+            <span class="eyebrow">QR SCANNER</span>
+
+            <h2>Scan Package QR</h2>
+
+            <p>
+                Point your camera at the QR code on the package.
+            </p>
+
+        </div>
+
+        <div id="qrReader"></div>
+
+        <p id="qrStatus" class="qr-status">
+            Starting camera...
+        </p>
+
+        <button id="qrBackBtn" class="back-btn">
+            ← Back to Home
+        </button>
+
+    </section>
 
     <section id="processingScreen" class="screen">
 
@@ -89,15 +110,13 @@
 
             <h2>Processing...</h2>
 
-            <p>Reading package image</p>
-            <p>Extracting information...</p>
+            <p id="processingMessage">
+                Reading package image...
+            </p>
 
         </div>
 
     </section>
-
-
-    <!-- ================= SUCCESS ================= -->
 
     <section id="successScreen" class="screen">
 
@@ -111,41 +130,14 @@
 
             </div>
 
-
             <div class="success-badge">
-
                 <span>✓</span>
                 Successfully Scanned
-
             </div>
 
         </div>
 
-
-        <div class="details">
-
-            <div class="detail-row">
-                <span>Product</span>
-                <strong>XYZ</strong>
-            </div>
-
-            <div class="detail-row">
-                <span>Batch No.</span>
-                <strong>ABC123</strong>
-            </div>
-
-            <div class="detail-row">
-                <span>Expiry</span>
-                <strong>12/2027</strong>
-            </div>
-
-            <div class="detail-row">
-                <span>Manufacturer</span>
-                <strong>ABC Ltd.</strong>
-            </div>
-
-        </div>
-
+        <div id="detailsContainer" class="details"></div>
 
         <div class="result-actions">
 
@@ -161,9 +153,6 @@
 
     </section>
 
-
-    <!-- ================= ERROR ================= -->
-
     <section id="errorScreen" class="screen">
 
         <div class="error-content">
@@ -174,8 +163,6 @@
 
             <span class="eyebrow">SCAN FAILED</span>
 
-            <!-- JS will change these dynamically -->
-
             <h2 id="errorTitle">
                 Couldn’t read package details.
             </h2>
@@ -183,7 +170,6 @@
             <p id="errorMessage">
                 Please upload a clear package image.
             </p>
-
 
             <button id="errorBackBtn" class="back-btn">
                 ← Back to Home
