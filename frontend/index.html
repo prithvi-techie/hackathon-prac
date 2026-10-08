@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QR / Package Scanner</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<main class="app">
+
+    <!-- ================= HOME ================= -->
+
+    <section id="homeScreen" class="screen active">
+
+        <div class="brand">
+            <div class="brand-icon">⌁</div>
+            <span>Package Scanner</span>
+        </div>
+
+        <div class="hero">
+
+            <span class="eyebrow">PACKAGE VERIFICATION</span>
+
+            <h1>
+                QR / PACKAGE<br>
+                <span>SCANNER</span>
+            </h1>
+
+            <p>
+                Scan or upload a package to extract its details.
+            </p>
+
+        </div>
+
+
+        <div class="action-area">
+
+            <button id="scanQrBtn" class="primary-btn">
+                <span class="btn-icon">▣</span>
+                Scan QR
+            </button>
+
+            <button id="uploadBtn" class="secondary-btn">
+                <span class="btn-icon">↑</span>
+                Upload Image
+            </button>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                hidden
+            >
+
+        </div>
+
+
+        <div class="empty-state">
+
+            <div class="empty-icon">⌑</div>
+
+            <p>No package scanned yet.</p>
+
+            <span>
+                Choose an option above to get started.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PROCESSING ================= -->
+
+    <section id="processingScreen" class="screen">
+
+        <div class="processing-content">
+
+            <div class="loader"></div>
+
+            <span class="eyebrow">PLEASE WAIT</span>
+
+            <h2>Processing...</h2>
+
+            <p>Reading package image</p>
+            <p>Extracting information...</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SUCCESS ================= -->
+
+    <section id="successScreen" class="screen">
+
+        <div class="result-header">
+
+            <div>
+
+                <span class="eyebrow">SCAN RESULT</span>
+
+                <h2>Package Details</h2>
+
+            </div>
+
+
+            <div class="success-badge">
+
+                <span>✓</span>
+                Successfully Scanned
+
+            </div>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail-row">
+                <span>Product</span>
+                <strong>XYZ</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Batch No.</span>
+                <strong>ABC123</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Expiry</span>
+                <strong>12/2027</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Manufacturer</span>
+                <strong>ABC Ltd.</strong>
+            </div>
+
+        </div>
+
+
+        <div class="result-actions">
+
+            <button id="scanAnotherBtn" class="primary-btn">
+                Scan Another
+            </button>
+
+            <button id="successBackBtn" class="back-btn">
+                ← Back to Home
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ERROR ================= -->
+
+    <section id="errorScreen" class="screen">
+
+        <div class="error-content">
+
+            <div class="error-icon">
+                !
+            </div>
+
+            <span class="eyebrow">SCAN FAILED</span>
+
+            <!-- JS will change these dynamically -->
+
+            <h2 id="errorTitle">
+                Couldn’t read package details.
+            </h2>
+
+            <p id="errorMessage">
+                Please upload a clear package image.
+            </p>
+
+
+            <button id="errorBackBtn" class="back-btn">
+                ← Back to Home
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>
+
