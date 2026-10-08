@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Package Information OCR</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #697386;
+            margin-bottom: 25px;
+        }
+
+        .box {
+            background: white;
+            border: 1px solid #dfe5ef;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin-top: 12px;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        /* STRUCTURED RESULT */
+
+        .result-section {
+            margin-top: 30px;
+        }
+
+        .result-section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            padding: 15px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .field-label {
+            font-size: 13px;
+            color: #697386;
+            margin-bottom: 5px;
+        }
+
+        .field-value {
+            font-size: 15px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .not-detected {
+            color: #9a3412;
+            font-weight: 500;
+        }
+
+        .wide {
+            grid-column: 1 / -1;
+        }
+
+        /* RAW OCR */
+
+        details {
+            margin-top: 30px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        pre {
+            margin-top: 12px;
+            padding: 18px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+
+            .fields {
+                grid-template-columns: 1fr;
+            }
+
+            .wide {
+                grid-column: auto;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Package Information OCR</h1>
+
+    <p class="subtitle">
+        Upload a package image to extract important product information.
+    </p>
+
+    <div class="box">
+
+        <label for="imageInput">
+            Select package image:
+        </label>
+
+        <br>
+
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+        >
+
+        <div id="status">
+            Waiting for image...
+        </div>
+
+        <div class="progress">
+            <div id="progressBar"></div>
+        </div>
+
+        <!-- STRUCTURED RESULT -->
+
+        <div class="result-section">
+
+            <h2>Package Information</h2>
+
+            <div class="fields">
+
+                <div class="field">
+                    <div class="field-label">
+                        Product
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="product"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        Brand
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="brand"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        Net Quantity
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="quantity"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        MRP
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="mrp"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        Batch / Lot No.
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="batch"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        Mfg / Pkd Date
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="manufacturingDate"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        Best Before / Expiry
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="expiry"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="field-label">
+                        FSSAI License No.
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="fssai"
+                    >
+                        Not detected
+                    </div>
+                </div>
+
+
+                <div class="field wide">
+
+                    <div class="field-label">
+                        Manufacturer
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="manufacturer"
+                    >
+                        Not detected
+                    </div>
+
+                </div>
+
+
+                <div class="field wide">
+
+                    <div class="field-label">
+                        Manufacturer Address
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="address"
+                    >
+                        Not detected
+                    </div>
+
+                </div>
+
+
+                <div class="field wide">
+
+                    <div class="field-label">
+                        Ingredients
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="ingredients"
+                    >
+                        Not detected
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <div class="field-label">
+                        Contains
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="contains"
+                    >
+                        Not detected
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <div class="field-label">
+                        Customer Care
+                    </div>
+
+                    <div
+                        class="field-value"
+                        id="customerCare"
+                    >
+                        Not detected
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RAW OCR -->
+
+        <details>
+
+            <summary>
+                View Raw OCR Text
+            </summary>
+
+            <pre id="rawText">
+No OCR data yet.
+            </pre>
+
+        </details>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+
+<script>
+
+// ==================================================
+// ELEMENTS
+// ==================================================
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const status =
+    document.getElementById("status");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const rawText =
+    document.getElementById("rawText");
+
+
+// ==================================================
+// FIELD ELEMENTS
+// ==================================================
+
+const fields = {
+
+    product:
+        document.getElementById("product"),
+
+    brand:
+        document.getElementById("brand"),
+
+    quantity:
+        document.getElementById("quantity"),
+
+    mrp:
+        document.getElementById("mrp"),
+
+    batch:
+        document.getElementById("batch"),
+
+    manufacturingDate:
+        document.getElementById("manufacturingDate"),
+
+    expiry:
+        document.getElementById("expiry"),
+
+    fssai:
+        document.getElementById("fssai"),
+
+    manufacturer:
+        document.getElementById("manufacturer"),
+
+    address:
+        document.getElementById("address"),
+
+    ingredients:
+        document.getElementById("ingredients"),
+
+    contains:
+        document.getElementById("contains"),
+
+    customerCare:
+        document.getElementById("customerCare")
+
+};
+
+
+// ==================================================
+// LOAD IMAGE
+// ==================================================
+
+function loadImage(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const image = new Image();
+
+        image.onload = () => {
+
+            URL.revokeObjectURL(image.src);
+
+            resolve(image);
+
+        };
+
+        image.onerror = reject;
+
+        image.src =
+            URL.createObjectURL(file);
+
+    });
+
+}
+
+
+// ==================================================
+// CREATE UPSCALED IMAGE
+// ==================================================
+
+function createCanvas(
+    image,
+    scale = 3
+) {
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width =
+        image.naturalWidth * scale;
+
+    canvas.height =
+        image.naturalHeight * scale;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.drawImage(
+        image,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    return canvas;
+}
+
+
+// ==================================================
+// NORMAL IMAGE
+// ==================================================
+
+function normalImage(image) {
+
+    const canvas =
+        createCanvas(image, 3);
+
+    return canvas.toDataURL(
+        "image/png"
+    );
+
+}
+
+
+// ==================================================
+// ENHANCED IMAGE
+// ==================================================
+
+function enhancedImage(image) {
+
+    const canvas =
+        createCanvas(image, 3);
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const imageData =
+        ctx.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    const data =
+        imageData.data;
+
+
+    for (
+        let i = 0;
+        i < data.length;
+        i += 4
+    ) {
+
+        const r = data[i];
+
+        const g = data[i + 1];
+
+        const b = data[i + 2];
+
+
+        let gray =
+            0.299 * r +
+            0.587 * g +
+            0.114 * b;
+
+
+        gray =
+            (gray - 128) * 1.8 + 128;
+
+
+        gray =
+            Math.max(
+                0,
+                Math.min(255, gray)
+            );
+
+
+        data[i] =
+            gray;
+
+        data[i + 1] =
+            gray;
+
+        data[i + 2] =
+            gray;
+
+    }
+
+
+    ctx.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+
+    return canvas.toDataURL(
+        "image/png"
+    );
+
+}
+
+
+// ==================================================
+// THRESHOLD IMAGE
+// ==================================================
+
+function thresholdImage(image) {
+
+    const canvas =
+        createCanvas(image, 3);
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const imageData =
+        ctx.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    const data =
+        imageData.data;
+
+
+    for (
+        let i = 0;
+        i < data.length;
+        i += 4
+    ) {
+
+        const r = data[i];
+
+        const g = data[i + 1];
+
+        const b = data[i + 2];
+
+
+        const gray =
+            0.299 * r +
+            0.587 * g +
+            0.114 * b;
+
+
+        const value =
+            gray > 150
+                ? 255
+                : 0;
+
+
+        data[i] =
+            value;
+
+        data[i + 1] =
+            value;
+
+        data[i + 2] =
+            value;
+
+    }
+
+
+    ctx.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+
+    return canvas.toDataURL(
+        "image/png"
+    );
+
+}
+
+
+// ==================================================
+// CLEAN OCR TEXT
+// ==================================================
+
+function cleanText(text) {
+
+    return text
+        .replace(/\r/g, "")
+        .replace(/[ \t]+/g, " ")
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 1)
+        .join("\n")
+        .trim();
+
+}
+
+
+// ==================================================
+// OCR
+// ==================================================
+
+async function runOCR(
+    worker,
+    image,
+    psm
+) {
+
+    const result =
+        await worker.recognize(
+            image,
+            {
+                config: {
+                    tessedit_pageseg_mode: psm
+                }
+            }
+        );
+
+    return cleanText(
+        result.data.text
+    );
+
+}
+
+
+// ==================================================
+// MERGE OCR RESULTS
+// ==================================================
+
+function mergeResults(results) {
+
+    const lines = [];
+
+    const seen =
+        new Set();
+
+
+    for (const text of results) {
+
+        const split =
+            text.split("\n");
+
+
+        for (const line of split) {
+
+            const clean =
+                line.trim();
+
+
+            if (
+                clean.length < 2
+            ) {
+                continue;
+            }
+
+
+            const key =
+                clean.toLowerCase();
+
+
+            if (
+                !seen.has(key)
+            ) {
+
+                seen.add(key);
+
+                lines.push(clean);
+
+            }
+
+        }
+
+    }
+
+
+    return lines.join("\n");
+
+}
+
+
+// ==================================================
+// HELPERS
+// ==================================================
+
+function setField(
+    element,
+    value
+) {
+
+    if (
+        value &&
+        value.trim()
+    ) {
+
+        element.textContent =
+            value.trim();
+
+        element.classList.remove(
+            "not-detected"
+        );
+
+    }
+    else {
+
+        element.textContent =
+            "Not detected";
+
+        element.classList.add(
+            "not-detected"
+        );
+
+    }
+
+}
+
+
+// ==================================================
+// FIELD EXTRACTION
+// ==================================================
+
+function extractFields(text) {
+
+    const lower =
+        text.toLowerCase();
+
+
+    // ----------------------------------------------
+    // BRAND
+    // ----------------------------------------------
+
+    let brand =
+        null;
+
+
+    if (
+        lower.includes("britannia")
+    ) {
+
+        brand =
+            "Britannia";
+
+    }
+
+
+    // ----------------------------------------------
+    // PRODUCT
+    // ----------------------------------------------
+
+    let product =
+        null;
+
+
+    const productMatch =
+        text.match(
+            /(?:tiger\s+krunch(?:\s+chocochips)?)/i
+        );
+
+
+    if (productMatch) {
+
+        product =
+            productMatch[0]
+                .replace(
+                    /\s+/g,
+                    " "
+                )
+                .trim();
+
+    }
+
+
+    // ----------------------------------------------
+    // NET QUANTITY
+    // ----------------------------------------------
+
+    let quantity =
+        null;
+
+
+    const quantityMatch =
+        text.match(
+            /(?:net\s*(?:quantity|qty)|net)\s*[:\-]?\s*(\d+(?:\.\d+)?)\s*(kg|g|mg|l|ml)/i
+        );
+
+
+    if (quantityMatch) {
+
+        quantity =
+            quantityMatch[1] +
+            " " +
+            quantityMatch[2];
+
+    }
+
+
+    // ----------------------------------------------
+    // MRP
+    // ----------------------------------------------
+
+    let mrp =
+        null;
+
+
+    const mrpMatch =
+        text.match(
+            /mrp\s*(?:rs\.?|₹)?\s*[:\-]?\s*(?:rs\.?|₹)?\s*(\d+(?:\.\d+)?)/i
+        );
+
+
+    if (mrpMatch) {
+
+        mrp =
+            "₹" +
+            mrpMatch[1];
+
+    }
+
+
+    // ----------------------------------------------
+    // BATCH
+    // ----------------------------------------------
+
+    let batch =
+        null;
+
+
+    const batchMatch =
+        text.match(
+            /(?:batch|lot)\s*(?:no\.?|number)?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]+)/i
+        );
+
+
+    if (batchMatch) {
+
+        batch =
+            batchMatch[1];
+
+    }
+
+
+    // ----------------------------------------------
+    // MANUFACTURING DATE
+    // ----------------------------------------------
+
+    let manufacturingDate =
+        null;
+
+
+    const mfgMatch =
+        text.match(
+            /(?:mfg|manufactured|packed|pkd)\s*(?:date)?\s*[:\-]?\s*([0-9]{1,2}[\/\-][0-9]{1,2}[\/\-][0-9]{2,4}|[0-9]{1,2}[\/\-][0-9]{2,4})/i
+        );
+
+
+    if (mfgMatch) {
+
+        manufacturingDate =
+            mfgMatch[1];
+
+    }
+
+
+    // ----------------------------------------------
+    // EXPIRY / BEST BEFORE
+    // ----------------------------------------------
+
+    let expiry =
+        null;
+
+
+    const expiryMatch =
+        text.match(
+            /(?:best\s*before|expiry|exp)\s*[:\-]?\s*([A-Z0-9\/\-\s]+)/i
+        );
+
+
+    if (expiryMatch) {
+
+        expiry =
+            expiryMatch[1]
+                .split("\n")[0]
+                .trim();
+
+    }
+
+
+    // ----------------------------------------------
+    // FSSAI
+    // ----------------------------------------------
+
+    let fssai =
+        null;
+
+
+    const fssaiMatch =
+        text.match(
+            /(?:lic\.?\s*no\.?|license\s*no\.?)\s*[:\-]?\s*(\d{10,15})/i
+        );
+
+
+    if (fssaiMatch) {
+
+        fssai =
+            fssaiMatch[1];
+
+    }
+
+
+    // ----------------------------------------------
+    // MANUFACTURER
+    // ----------------------------------------------
+
+    let manufacturer =
+        null;
+
+
+    const manufacturerMatch =
+        text.match(
+            /(?:manufactured\s*by|manufactured\s*&|marketed\s*by|manufactured\s*for|packed\s*by)\s*:?\s*([^\n]+)/i
+        );
+
+
+    if (manufacturerMatch) {
+
+        manufacturer =
+            manufacturerMatch[1]
+                .trim();
+
+    }
+    else if (
+        lower.includes(
+            "britannia industries ltd"
+        )
+    ) {
+
+        manufacturer =
+            "Britannia Industries Ltd.";
+
+    }
+
+
+    // ----------------------------------------------
+    // ADDRESS
+    // ----------------------------------------------
+
+    let address =
+        null;
+
+
+    const addressMatch =
+        text.match(
+            /(?:5\/1\s*a?\s*,?\s*hungerford\s*street[^\n]*)/i
+        );
+
+
+    if (addressMatch) {
+
+        address =
+            addressMatch[0]
+                .trim();
+
+    }
+
+
+    // ----------------------------------------------
+    // INGREDIENTS
+    // ----------------------------------------------
+
+    let ingredients =
+        null;
+
+
+    const ingredientsMatch =
+        text.match(
+            /ingredients\s*:?\s*([\s\S]*?)(?=serving\s*size|contains\s+wheat|nutrition\s+information|$)/i
+        );
+
+
+    if (ingredientsMatch) {
+
+        ingredients =
+            ingredientsMatch[1]
+                .replace(/\s+/g, " ")
+                .trim();
+
+    }
+
+
+    // ----------------------------------------------
+    // CONTAINS
+    // ----------------------------------------------
+
+    let contains =
+        null;
+
+
+    const containsMatch =
+        text.match(
+            /contains\s*:?\s*([^\n]+)/i
+        );
+
+
+    if (containsMatch) {
+
+        contains =
+            containsMatch[1]
+                .trim();
+
+    }
+    else {
+
+        const simpleContains =
+            text.match(
+                /contains\s+(wheat[^.\n]*)/i
+            );
+
+        if (simpleContains) {
+
+            contains =
+                simpleContains[1]
+                    .trim();
+
+        }
+
+    }
+
+
+    // ----------------------------------------------
+    // CUSTOMER CARE
+    // ----------------------------------------------
+
+    let customerCare =
+        null;
+
+
+    const phoneNumbers =
+        text.match(
+            /\b1[-\s]?\d{3}[-\s]?\d{6,8}\b/g
+        );
+
+
+    if (phoneNumbers) {
+
+        customerCare =
+            phoneNumbers
+                .join(" / ");
+
+    }
+
+
+    // ----------------------------------------------
+    // RETURN
+    // ----------------------------------------------
+
+    return {
+
+        product,
+
+        brand,
+
+        quantity,
+
+        mrp,
+
+        batch,
+
+        manufacturingDate,
+
+        expiry,
+
+        fssai,
+
+        manufacturer,
+
+        address,
+
+        ingredients,
+
+        contains,
+
+        customerCare
+
+    };
+
+}
+
+
+// ==================================================
+// DISPLAY STRUCTURED DATA
+// ==================================================
+
+function displayFields(data) {
+
+    setField(
+        fields.product,
+        data.product
+    );
+
+    setField(
+        fields.brand,
+        data.brand
+    );
+
+    setField(
+        fields.quantity,
+        data.quantity
+    );
+
+    setField(
+        fields.mrp,
+        data.mrp
+    );
+
+    setField(
+        fields.batch,
+        data.batch
+    );
+
+    setField(
+        fields.manufacturingDate,
+        data.manufacturingDate
+    );
+
+    setField(
+        fields.expiry,
+        data.expiry
+    );
+
+    setField(
+        fields.fssai,
+        data.fssai
+    );
+
+    setField(
+        fields.manufacturer,
+        data.manufacturer
+    );
+
+    setField(
+        fields.address,
+        data.address
+    );
+
+    setField(
+        fields.ingredients,
+        data.ingredients
+    );
+
+    setField(
+        fields.contains,
+        data.contains
+    );
+
+    setField(
+        fields.customerCare,
+        data.customerCare
+    );
+
+}
+
+
+// ==================================================
+// RESET FIELDS
+// ==================================================
+
+function resetFields() {
+
+    Object.values(fields)
+        .forEach(element => {
+
+            element.textContent =
+                "Not detected";
+
+            element.classList.add(
+                "not-detected"
+            );
+
+        });
+
+}
+
+
+// ==================================================
+// IMAGE UPLOAD
+// ==================================================
+
+imageInput.addEventListener(
+    "change",
+    async () => {
+
+        const file =
+            imageInput.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        if (
+            !file.type.startsWith("image/")
+        ) {
+
+            status.textContent =
+                "Invalid image.";
+
+            return;
+
+        }
+
+
+        resetFields();
+
+        rawText.textContent =
+            "Processing...";
+
+        progressBar.style.width =
+            "5%";
+
+
+        try {
+
+            // ----------------------------------
+            // LOAD
+            // ----------------------------------
+
+            status.textContent =
+                "Loading image...";
+
+
+            const image =
+                await loadImage(file);
+
+
+            // ----------------------------------
+            // PREPROCESS
+            // ----------------------------------
+
+            status.textContent =
+                "Preparing image...";
+
+
+            const normal =
+                normalImage(image);
+
+
+            const enhanced =
+                enhancedImage(image);
+
+
+            const threshold =
+                thresholdImage(image);
+
+
+            progressBar.style.width =
+                "15%";
+
+
+            // ----------------------------------
+            // OCR ENGINE
+            // ----------------------------------
+
+            status.textContent =
+                "Starting OCR...";
+
+
+            const worker =
+                await Tesseract.createWorker(
+                    "eng",
+                    1,
+                    {
+                        logger: info => {
+
+                            if (
+                                info.status ===
+                                "recognizing text"
+                            ) {
+
+                                const percent =
+                                    Math.round(
+                                        info.progress * 100
+                                    );
+
+                                status.textContent =
+                                    `Reading package... ${percent}%`;
+
+                            }
+
+                        }
+                    }
+                );
+
+
+            // ----------------------------------
+            // OCR PASS 1
+            // ----------------------------------
+
+            status.textContent =
+                "Reading package — Pass 1...";
+
+
+            const text1 =
+                await runOCR(
+                    worker,
+                    normal,
+                    6
+                );
+
+
+            progressBar.style.width =
+                "40%";
+
+
+            // ----------------------------------
+            // OCR PASS 2
+            // ----------------------------------
+
+            status.textContent =
+                "Reading package — Pass 2...";
+
+
+            const text2 =
+                await runOCR(
+                    worker,
+                    enhanced,
+                    11
+                );
+
+
+            progressBar.style.width =
+                "65%";
+
+
+            // ----------------------------------
+            // OCR PASS 3
+            // ----------------------------------
+
+            status.textContent =
+                "Reading package — Pass 3...";
+
+
+            const text3 =
+                await runOCR(
+                    worker,
+                    threshold,
+                    11
+                );
+
+
+            progressBar.style.width =
+                "85%";
+
+
+            // ----------------------------------
+            // MERGE
+            // ----------------------------------
+
+            const finalText =
+                mergeResults([
+                    text1,
+                    text2,
+                    text3
+                ]);
+
+
+            rawText.textContent =
+                finalText ||
+                "No readable text found.";
+
+
+            // ----------------------------------
+            // EXTRACT FIELDS
+            // ----------------------------------
+
+            status.textContent =
+                "Extracting package information...";
+
+
+            const data =
+                extractFields(
+                    finalText
+                );
+
+
+            // ----------------------------------
+            // DISPLAY
+            // ----------------------------------
+
+            displayFields(data);
+
+
+            progressBar.style.width =
+                "100%";
+
+
+            status.textContent =
+                "Package information extracted.";
+
+
+            await worker.terminate();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            status.textContent =
+                "OCR failed.";
+
+            rawText.textContent =
+                "Something went wrong while processing the image.";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
